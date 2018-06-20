@@ -5,7 +5,7 @@
 import * as d3 from 'd3';
 import 'bootstrap';
 import './scss/app.scss';
-import { makeGrid, makeTable } from './events';
+import { makeGrid, makeTable,startTraining } from './events';
 
 // Main Definition 
 function main(){

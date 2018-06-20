@@ -5,6 +5,8 @@
 import * as d3 from "d3";
 import {createModel} from './modeling';
 import {gridMenu,tableMenu} from './ui';
+import {titanicPreprocess} from './preprocessing';
+import * as tf from '@tensorflow/tfjs';
 
 export function makeGrid(data){
     gridMenu(data);
@@ -38,4 +40,9 @@ export function makeTable(data){
 
 export function startTraining(data){
     const model = createModel();
+    const cleanedData = titanicPreprocess(data);
+    const X = tf.tensor(cleanedData[0]);
+    const y = tf.tensor(cleanedData[1]);
+    model.fit(X,y,{epochs:10}).then( ()=>{console.log("T");});
+    console.log("OUT");
 }
