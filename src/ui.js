@@ -4,7 +4,6 @@
 
 import * as d3 from "d3";
 import * as _ from "lodash";
-import * as vega from "vega";
 
 function gridSelection(sel,cols,data){
     var selectedValue = sel[0].value;
