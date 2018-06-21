@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
     "@tensorflow/tfjs": "^0.11.6",
+    "babel-loader": "^8.0.0-beta.3",
     "bootstrap": "^4.1.1",
     "d3": "^5.5.0",
     "jquery": "^3.3.1",

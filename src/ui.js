@@ -27,3 +27,25 @@ export function gridMenu(data){
 export function tableMenu(){
     d3.select("#dataVisMenu").selectAll("*").remove();
 }
+
+export function updatePredictions(predictions){
+    function predToColor(pred){
+        // More Probable to survive. 
+        var color = "0,255,0";
+        var alpha = 0.0;
+        
+        if(pred < 0.5){
+            // More probable to die. 
+            color = "255,0,0";
+            alpha=(0.5-pred)*2;
+        }else{
+            // More probable to survive. 
+            alpha=(pred-0.5)*2;
+        }
+
+        return "rgba("+color+","+alpha+")";
+    }
+    const predColor = _.map(predictions,predToColor);
+    d3.select("#dat").select("table").select("tbody")
+    .selectAll("tr").data(predColor).style("background-color",(x)=>x);
+}
