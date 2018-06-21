@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<div class="container">
+<div id="headContent" class="container">
     <center><h1>$$\large\text{Neural Titanic}$$</h1></center> 
     <center>
         <h3>
@@ -17,30 +17,73 @@
         </h3>
     </center> 
     
-    <h3>Task Overview</h3>
-    <p>
-        The sinking of the RMS Titanic is one of the most infamous shipwrecks in history.  
-        On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, 
-        killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international 
-        community and led to better safety regulations for ships. One of the reasons that the shipwreck 
-        led to such loss of life was that there were not enough lifeboats for the passengers and crew. 
-        Although there was some element of luck involved in surviving the sinking, some groups of people 
-        were more likely to survive than others, such as women, children, and the upper-class. In this challenge, 
-        we ask you to complete the analysis of what sorts of people were likely to survive. In particular,
-        we ask you to apply the tools of machine learning to predict which passengers survived the tragedy. 
-        ( <a href="https://www.kaggle.com/c/titanic">Description Source</a> ) 
-    </p>
-    <h3>Visualization Overview</h3>
-    <p>
-        In this visualization we will ...
-    </p>
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#dataOverview">Data Overview</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu1">Visualization Details</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu2">FAQ</a></li>
+        </ul>
+        
+        <div class="tab-content">
+            <div id="dataOverview" class="tab-pane fade show active">
+                <p>
+                        The sinking of the RMS Titanic is one of the most infamous shipwrecks in history.  
+                        On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, 
+                        killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international 
+                        community and led to better safety regulations for ships. One of the reasons that the shipwreck 
+                        led to such loss of life was that there were not enough lifeboats for the passengers and crew. 
+                        Although there was some element of luck involved in surviving the sinking, some groups of people 
+                        were more likely to survive than others, such as women, children, and the upper-class. In this challenge, 
+                        we ask you to complete the analysis of what sorts of people were likely to survive. In particular,
+                        we ask you to apply the tools of machine learning to predict which passengers survived the tragedy. 
+                        ( <a href="https://www.kaggle.com/c/titanic">Description Source</a> ) 
+                </p>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                TODO
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                TODO
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="visContainer">
     <div id="visMidContainer">
         <div id="modelView">
             <div id="trainingCurves">d</div>
-            <div id="modelParameters">d</div>
+            <div id="modelParameters">
+                <form>
+                    <div class="form-group row">
+                      <label for="epochs" class="col-sm-5 col-form-label">Epochs</label>
+                      <div class="col-sm-6">
+                        <input type="number" class="form-control" id="epochs" placeholder="Epochs" value="50">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="epochs" class="col-sm-5 col-form-label">Batch Size</label>
+                        <div class="col-sm-6">
+                          <input type="number" class="form-control" id="batchSize" placeholder="Epochs" value="12">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="epochs" class="col-sm-5 col-form-label">Learning Rate</label>
+                        <div class="col-sm-6">
+                          <input type="number" step="0.001" class="form-control" id="learningRate" placeholder="Epochs" value="0.001">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="epochs" class="col-sm-5 col-form-label">Loss Function</label>
+                        <div class="col-sm-6">
+                            <select id="lossFunction" class="form-control">
+                                <option>Log Loss</option>
+                                <option>MSE</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div id="startBttnContainer">
                 <button id="startBttn" class="btn btn-success btn-lg">Start Training</button>
             </div>

@@ -19,7 +19,8 @@ export function gridMenu(data){
     d3.select("#dataVisMenu").selectAll("*").remove();
     var cols = data.columns;
 
-    d3.select("#dataVisMenu").append("select").on("change",(_a,_b,sel)=>gridSelection(sel,cols,data))
+    d3.select("#dataVisMenu").append("div").text("Feature: ")
+    .append("select").on("change",(_a,_b,sel)=>gridSelection(sel,cols,data))
     .attr("class","from-control").selectAll("option").data(cols).enter().append("option")
     .text(function (d){return d});
 }
@@ -30,8 +31,7 @@ export function tableMenu(){
 
 export function updatePredictions(predictions){
     function predToColor(pred){
-        // More Probable to survive. 
-        var color = "0,255,0";
+        var color = "0,0,0";
         var alpha = 0.0;
         
         if(pred < 0.5){
@@ -40,6 +40,7 @@ export function updatePredictions(predictions){
             alpha=(0.5-pred)*2;
         }else{
             // More probable to survive. 
+            color = "0,255,0";
             alpha=(pred-0.5)*2;
         }
 

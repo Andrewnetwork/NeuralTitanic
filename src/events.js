@@ -7,6 +7,16 @@ import {trainModel} from './modeling';
 import {gridMenu,tableMenu} from './ui';
 import * as tf from '@tensorflow/tfjs';
 
+// Event State
+var isTraining = false;
+export function isTrainingM(v){
+    if(v==null){
+        return v;
+    }else{
+        isTraining = v;
+    }
+}
+
 export function makeGrid(data){
     gridMenu(data);
 
@@ -37,6 +47,14 @@ export function makeTable(data){
     .text(function(d){return d}).exit();
 }
 
+
 export function startTraining(data){
-    trainModel(data);
+    if(!isTraining){
+        console.log("Training Begin");
+        isTrainingM(true);
+        trainModel(data);
+    }else{
+        console.log("Already Training");
+        
+    }
 }

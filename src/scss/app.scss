@@ -51,10 +51,13 @@ body {
 }
 
 #modelParameters{
-    height: 300px;
+    height: auto;
     width: 300px;
     border: medium solid gray;
-    background-color: red;
+    background-color: white;
+    padding: 6px;
+    padding-left: 8px;
+    padding-bottom: 0px;
 }
 
 #dataDisplay{
@@ -78,4 +81,13 @@ body {
 #footer{
     text-align: center;
     margin-top: 10px;
+}
+
+#headContent{
+    margin-bottom: 25px;
+}
+
+#dataOverview{
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 15px;
 }
