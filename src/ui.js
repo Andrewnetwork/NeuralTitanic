@@ -4,6 +4,7 @@
 
 import * as d3 from "d3";
 import * as _ from "lodash";
+import * as vega from "vega";
 
 function gridSelection(sel,cols,data){
     var selectedValue = sel[0].value;
@@ -49,4 +50,13 @@ export function updatePredictions(predictions){
     const predColor = _.map(predictions,predToColor);
     d3.select("#dat").select("table").select("tbody")
     .selectAll("tr").data(predColor).style("background-color",(x)=>x);
+}
+
+export async function plotLoss(lossData){
+    var svg = d3.select("#trainingCurves").select("svg");
+    var data = {"x":_.range(lossData.length),"y":lossData};
+    var line = d3.line().x((d)=>d.x).y((d)=>d.y);
+    
+    svg.append("path").attr("d","M150 40 L75 200 L225 200 Z" );
+    //.attr("d", line);
 }

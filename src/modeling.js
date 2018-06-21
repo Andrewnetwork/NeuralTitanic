@@ -4,11 +4,9 @@
 
 import * as tf from '@tensorflow/tfjs';
 import {titanicPreprocess} from './preprocessing';
-import {updatePredictions} from './ui';
+import {updatePredictions,plotLoss} from './ui';
 import {isTrainingM} from './events';
 import * as d3 from "d3";
-
-const BATCH_SIZE = 64;
 
 export function createModel(){
     const model = tf.sequential();
@@ -34,8 +32,8 @@ export async function trainModel(data){
     const accuracyValues = [];
 
     // Get Hyperparameter Settings
-    const epochs    = d3.select("#epochs").attr("value");
-    const batchSize = d3.select("#epochs").attr("value");
+    const epochs    = d3.select("#epochs").property("value");
+    const batchSize = d3.select("#batchSize").property("value");
 
     for(let epoch = 0; epoch < epochs; epoch++ ){
         try{
@@ -50,7 +48,10 @@ export async function trainModel(data){
 
                 const history = await model.fit(xs, ys, {batchSize: batchSize, epochs: 1});
 
-                const loss = history.history.loss[0];
+                lossValues.push(history.history.loss[0]);
+
+                await plotLoss(lossValues);
+
                 //const accuracy = history.history.acc[0];
 
                 // Plot loss / accuracy.
