@@ -5,7 +5,7 @@
 import * as d3 from 'd3';
 import 'bootstrap';
 import './scss/app.scss';
-import { makeGrid, makeTable,startTraining } from './events';
+import { makeTable,startTraining } from './events';
 
 // Main Definition 
 function main(){
@@ -13,9 +13,7 @@ function main(){
 
   // Setup Event Listeners 
   d3.select("#tableViewBttn").on("click",()=>makeTable(titanicData));
-  d3.select("#gridViewBttn").on("click",()=>makeGrid(titanicData));
   d3.select("#startBttn").on("click",()=>startTraining(titanicData));
-  
 
   d3.dsv(",", "data/titanicData.csv", function(d) { 
     return {d}

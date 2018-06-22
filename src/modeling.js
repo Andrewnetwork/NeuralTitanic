@@ -10,10 +10,11 @@ import * as d3 from "d3";
 import * as _ from "lodash";
 
 export function createModel(){
+    const initStrat = "leCunNormal";
     const model = tf.sequential();
     model.add(tf.layers.batchNormalization({inputShape:[12]}));
-    model.add(tf.layers.dense({units:40,activation:"sigmoid"}));
-    model.add(tf.layers.dense({units:1,activation:"sigmoid"}));
+    model.add(tf.layers.dense({units:40,activation:"sigmoid",kernelInitializer:initStrat}));
+    model.add(tf.layers.dense({units:1,activation:"sigmoid",kernelInitializer:initStrat}));
     model.compile({optimizer: "adam", loss: tf.losses.logLoss});
 
     return model;

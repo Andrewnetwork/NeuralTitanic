@@ -4,7 +4,6 @@
 
 import * as d3 from "d3";
 import {trainModel} from './modeling';
-import {gridMenu,tableMenu} from './ui';
 import * as tf from '@tensorflow/tfjs';
 
 // Event State
@@ -17,20 +16,8 @@ export function isTrainingM(v){
     }
 }
 
-export function makeGrid(data){
-    gridMenu(data);
-
-    d3.select("#dat").selectAll("*").remove();
-    var container = d3.select("#dat").append("div");
-    
-    container.selectAll("div").data(data).enter()
-    .append("div").attr("class","gridCell")
-    .text(function (d){return Object.values(d.d)[0];});
-}
 
 export function makeTable(data){
-    tableMenu();
-
     d3.select("#dat").selectAll("*").remove();
 
     // Create Table 
