@@ -27,13 +27,14 @@ export function updatePredictions(predictions){
     .selectAll("tr").data(predColor).style("background-color",(x)=>x);
 }
 
+var svg = d3.select("#trainingCurves").select("svg");
 const margin = {top: 20, right: 20, bottom: 20, left: 20};
+const width  = +svg.attr("width") - margin.left - margin.right;
+const height = +svg.attr("height") - margin.top - margin.bottom;
 
 export function initPlot(){
     d3.select("#trainingCurves").select("svg").selectAll("*").remove();
-    var svg = d3.select("#trainingCurves").select("svg");
-    var width  = +svg.attr("width") - margin.left - margin.right;
-    var height = +svg.attr("height") - margin.top - margin.bottom;
+
     var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .append("path");
@@ -45,9 +46,6 @@ export function initPlot(){
 }
 export async function plotLoss(lossData,accuracy){
     // Modified from: https://bl.ocks.org/mbostock/3883245
-    var svg = d3.select("#trainingCurves").select("svg");
-    var width  = +svg.attr("width") - margin.left - margin.right;
-    var height = +svg.attr("height") - margin.top - margin.bottom;
     var g = svg.select("g");
     var lossText = svg.select("text");
     var y = d3.scaleLinear().rangeRound([height, 0]);
@@ -66,6 +64,6 @@ export async function plotLoss(lossData,accuracy){
         .attr("stroke-width",3)
         .attr("d", line);
     
-    lossText.text("Loss: "+lossData[lossData.length-1].toFixed(3)+" | Accuracy: "+accuracy.toFixed(3));
+    lossText.text("Loss: "+lossData[lossData.length-1].toFixed(3)+" | Accuracy: "+(accuracy*100).toFixed(2)+"%");
 
 }
