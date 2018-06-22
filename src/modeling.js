@@ -4,15 +4,15 @@
 
 import * as tf from '@tensorflow/tfjs';
 import {titanicPreprocess} from './preprocessing';
-import {updatePredictions,plotLoss} from './ui';
+import {updatePredictions,plotLoss,initPlot} from './ui';
 import {isTrainingM} from './events';
 import * as d3 from "d3";
+import * as _ from "lodash";
 
 export function createModel(){
     const model = tf.sequential();
-    model.add(tf.layers.dense({units:20,inputShape:[12]}));
-    model.add(tf.layers.dense({units:20,activation:"sigmoid"}));
-    model.add(tf.layers.dense({units:20,activation:"sigmoid"}));
+    model.add(tf.layers.batchNormalization({inputShape:[12]}));
+    model.add(tf.layers.dense({units:40,activation:"sigmoid"}));
     model.add(tf.layers.dense({units:1,activation:"sigmoid"}));
     model.compile({optimizer: "adam", loss: tf.losses.logLoss});
 
@@ -30,10 +30,14 @@ export async function trainModel(data){
     // Train Model
     const lossValues = [];
     const accuracyValues = [];
+    var lastBatchLoss = null;
 
     // Get Hyperparameter Settings
     const epochs    = d3.select("#epochs").property("value");
-    const batchSize = d3.select("#batchSize").property("value");
+    const batchSize = d3.select("#batchSize").property("value")
+    
+    // Init training curve plotting. 
+    initPlot();
 
     for(let epoch = 0; epoch < epochs; epoch++ ){
         try{
@@ -47,10 +51,8 @@ export async function trainModel(data){
                 });
 
                 const history = await model.fit(xs, ys, {batchSize: batchSize, epochs: 1});
-
-                lossValues.push(history.history.loss[0]);
-
-                await plotLoss(lossValues);
+                lastBatchLoss = history.history.loss[0];
+                //lossValues.push(history.history.loss[0]);
 
                 //const accuracy = history.history.acc[0];
 
@@ -71,7 +73,14 @@ export async function trainModel(data){
             // End of epoch. 
             console.log("Epoch "+epoch+"/"+epochs+" ended.");
             const xs = tf.tensor(X);
-            updatePredictions(model.predict(xs).dataSync());
+            const pred = model.predict(xs).dataSync();
+            updatePredictions(pred);
+
+            const accuracy = _.sum(_.map(_.zip(pred,y),(x)=> (Math.round(x[0]) == x[1]) ? 1 : 0))/pred.length;
+
+            lossValues.push(lastBatchLoss);
+            plotLoss(lossValues,accuracy);
+
         }
     }
     isTrainingM(false);

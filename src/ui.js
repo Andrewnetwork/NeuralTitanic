@@ -51,11 +51,45 @@ export function updatePredictions(predictions){
     .selectAll("tr").data(predColor).style("background-color",(x)=>x);
 }
 
-export async function plotLoss(lossData){
+const margin = {top: 20, right: 20, bottom: 20, left: 20};
+
+export function initPlot(){
+    d3.select("#trainingCurves").select("svg").selectAll("*").remove();
     var svg = d3.select("#trainingCurves").select("svg");
-    var data = {"x":_.range(lossData.length),"y":lossData};
-    var line = d3.line().x((d)=>d.x).y((d)=>d.y);
+    var width  = +svg.attr("width") - margin.left - margin.right;
+    var height = +svg.attr("height") - margin.top - margin.bottom;
+    var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .append("path");
+
+    svg.append("text")
+    .attr("x",(width/2)-110)
+    .attr("y",height ).attr("fill","#377ff2")
+    .style("font-size","20px");
+}
+export async function plotLoss(lossData,accuracy){
+    // Modified from: https://bl.ocks.org/mbostock/3883245
+    var svg = d3.select("#trainingCurves").select("svg");
+    var width  = +svg.attr("width") - margin.left - margin.right;
+    var height = +svg.attr("height") - margin.top - margin.bottom;
+    var g = svg.select("g");
+    var lossText = svg.select("text");
+    var y = d3.scaleLinear().rangeRound([height, 0]);
+    var x = d3.scaleLinear().rangeRound([0, width/lossData.length]);
+    var data = _.zip(_.range(lossData.length),lossData);
+    var line = d3.line()
+    .x(function(d) { return x(d[0]); })
+    .y(function(d) { return y(d[1]); });
+
+    g.select("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width",3)
+        .attr("d", line);
     
-    svg.append("path").attr("d","M150 40 L75 200 L225 200 Z" );
-    //.attr("d", line);
+    lossText.text("Loss: "+lossData[lossData.length-1].toFixed(3)+" | Accuracy: "+accuracy.toFixed(3));
+
 }
