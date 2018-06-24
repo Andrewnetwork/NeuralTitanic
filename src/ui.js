@@ -4,6 +4,23 @@
 
 import * as d3 from "d3";
 import * as _ from "lodash";
+import { startTraining,stopTraining, changeSort} from './events';
+
+export function createTrainBttn(state,titanicData){
+    d3.select("#trainBttnContainer").selectAll("*").remove();
+  
+    if(state == "train"){
+        d3.select("#trainBttnContainer")
+        .append("button")
+        .attr("id","startBttn").attr("class","btn btn-success btn-lg")
+        .on("click",()=>startTraining(titanicData)).text("Start Training");
+    }else{
+        d3.select("#trainBttnContainer")
+        .append("button")
+        .attr("id","startBttn").attr("class","btn btn-danger btn-lg")
+        .on("click",()=>stopTraining(titanicData)).text("Stop Training");
+    }
+}
 
 export function updatePredictions(predictions){
     function predToColor(pred){
@@ -66,4 +83,36 @@ export async function plotLoss(lossData,accuracy){
     
     lossText.text("Loss: "+lossData[lossData.length-1].toFixed(3)+" | Accuracy: "+(accuracy*100).toFixed(2)+"%");
 
+}
+
+export function makeTable(data){
+    d3.select("#dat").selectAll("*").remove();
+
+    // Create Table 
+    var table = d3.select("#dat").append("table").attr("class","table");
+  
+    // Create Table Header
+    table.append("thead").append("tr")
+    .selectAll('th').data(data.columns).enter()
+    .append("th").text(function (column) { return column; });
+  
+    // Populate Table
+    table.append("tbody").selectAll("tr").data(data).enter().append("tr")
+    .selectAll("td").data(function (d){return Object.values(d.d);}).enter().append("td")
+    .text(function(d){return d}).exit();
+}
+
+export function createSortByMenu(data){
+    var cols = data.columns;
+
+    var divCont = d3.select("#tableControls").append("div").attr("class","form-group row")
+    
+    divCont.append("label").attr("class","col-sm-1 col-form-label").style("padding-left","0px")
+    .attr("for","sortFilter").text("Sort By");
+
+    // TODO: Replace list with cols.
+    divCont.append("div").attr("class","col-sm-3").append("select").attr("id","sortFilter")
+    .attr("class","form-control").on("change",(_a,_b,sel)=>changeSort(sel[0].value,data))
+    .selectAll("option").data(["pclass","survived","sex","age","sibsp","parch","fare"]).enter().append("option")
+    .text(function (d){return d});
 }

@@ -53,7 +53,11 @@
     <div id="visMidContainer">
         <div id="modelView">
             <div id="trainingCurves">
-                <svg width="300" height="300"></svg>
+                <svg width="300" height="300">
+                    <text style="font: bold 30px sans-serif;" x="48" y="160" fill="rgba(57, 57, 121, 0.692)">
+                        Start Training
+                    </text>
+                </svg>
             </div>
             <div id="modelParameters">
                 <form>
@@ -69,12 +73,29 @@
                           <input type="number" class="form-control" id="batchSize" placeholder="Epochs" value="300">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="nNeurons" class="col-sm-5 col-form-label">#Neurons</label>
+                        <div class="col-sm-6">
+                          <input type="number" class="form-control" id="nNeurons" placeholder="Epochs" value="40">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="activationFunction" class="col-sm-5 col-form-label">Activation</label>
+                        <div class="col-sm-6">
+                            <select id="activationFunction" class="form-control">
+                                <option>sigmoid</option>
+                                <option>linear</option>
+                                <option>relu</option>
+                                <option>tanh</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
-            <div id="startBttnContainer">
-                <button id="startBttn" class="btn btn-success btn-lg">Start Training</button>
+            <div id="trainBttnContainer">
             </div>
         </div>
+        <div id="tableControls"></div>
         <div id="dataDisplay">
             <div id="dat"></div>
         </div>

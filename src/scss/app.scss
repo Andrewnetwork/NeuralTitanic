@@ -47,6 +47,7 @@ body {
     background-color: white;
     border: 2px solid gray;
     margin-bottom: 30px;
+    margin-top: 53px;
 }
 
 #modelParameters{
@@ -73,7 +74,7 @@ body {
     text-align: center;
 }
 
-#startBttnContainer{
+#trainBttnContainer{
     margin-top: 10px;
 }
 
@@ -89,4 +90,6 @@ body {
 #dataOverview{
     background-color: rgba(255, 255, 255, 0.3);
     padding: 15px;
+}
+#tableControls{
 }

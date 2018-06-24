@@ -4,33 +4,35 @@
 
 import * as tf from '@tensorflow/tfjs';
 import {titanicPreprocess} from './preprocessing';
-import {updatePredictions,plotLoss,initPlot} from './ui';
-import {isTrainingM} from './events';
+import {updatePredictions,plotLoss,initPlot,createTrainBttn} from './ui';
 import * as d3 from "d3";
 import * as _ from "lodash";
 
-export function createModel(){
+export function createModel(actFn,nNeurons){
     const initStrat = "leCunNormal";
     const model = tf.sequential();
-    model.add(tf.layers.batchNormalization({inputShape:[12]}));
-    model.add(tf.layers.dense({units:40,activation:"sigmoid",kernelInitializer:initStrat}));
+    model.add(tf.layers.dense({units:nNeurons,activation:actFn,kernelInitializer:initStrat,inputShape:[12]}));
     model.add(tf.layers.dense({units:1,activation:"sigmoid",kernelInitializer:initStrat}));
     model.compile({optimizer: "adam", loss: tf.losses.logLoss});
-
     return model;
 }
 
-export async function trainModel(data){
+export async function trainModel(data,trainState){
+    // Disable Form Inputs 
+    d3.select("#modelParameters").selectAll(".form-control").attr('disabled', 'disabled');
+    d3.select("#tableControls").selectAll(".form-control").attr('disabled', 'disabled');
+
     // Create Model
-    const model = createModel();
+    const model = createModel(d3.select("#activationFunction").property("value"),
+                              parseInt(d3.select("#nNeurons").property("value")));
 
     // Preprocess Data
     const cleanedData = titanicPreprocess(data);
     const X = cleanedData[0];
     const y = cleanedData[1];
+
     // Train Model
     const lossValues = [];
-    const accuracyValues = [];
     var lastBatchLoss = null;
 
     // Get Hyperparameter Settings
@@ -40,10 +42,10 @@ export async function trainModel(data){
     // Init training curve plotting. 
     initPlot();
 
-    for(let epoch = 0; epoch < epochs; epoch++ ){
+    for(let epoch = 0; epoch < epochs && trainState.s; epoch++ ){
         try{
             var i = 0;
-            while(true){
+            while(trainState.s){
                 // Select Batch
                 const [xs,ys] = tf.tidy(() => {
                     const xs = tf.tensor(X.slice(i*batchSize,(i+1)*batchSize))
@@ -53,18 +55,6 @@ export async function trainModel(data){
 
                 const history = await model.fit(xs, ys, {batchSize: batchSize, epochs: 1});
                 lastBatchLoss = history.history.loss[0];
-                //lossValues.push(history.history.loss[0]);
-
-                //const accuracy = history.history.acc[0];
-
-                // Plot loss / accuracy.
-                //lossValues.push({'batch': i, 'loss': loss, 'set': 'train'});
-                //ui.plotLosses(lossValues);
-                /*
-                if (validationData != null) {
-                    accuracyValues.push({'batch': i, 'accuracy': accuracy, 'set': 'train'});
-                    ui.plotAccuracies(accuracyValues);
-                }*/
 
                 tf.dispose([xs, ys]);
                 await tf.nextFrame();
@@ -84,6 +74,12 @@ export async function trainModel(data){
 
         }
     }
-    isTrainingM(false);
+    trainState.s = true;
+    createTrainBttn("train",data);
     console.log("End Training");
+
+    // Enable Form Controls
+    d3.select("#modelParameters").selectAll(".form-control").attr('disabled', null);
+    d3.select("#tableControls").selectAll(".form-control").attr('disabled', null);
+
 }

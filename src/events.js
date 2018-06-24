@@ -4,44 +4,36 @@
 
 import * as d3 from "d3";
 import {trainModel} from './modeling';
+import {createTrainBttn,makeTable} from './ui';
 import * as tf from '@tensorflow/tfjs';
 
 // Event State
-var isTraining = false;
-export function isTrainingM(v){
-    if(v==null){
-        return v;
-    }else{
-        isTraining = v;
-    }
-}
-
-
-export function makeTable(data){
-    d3.select("#dat").selectAll("*").remove();
-
-    // Create Table 
-    var table = d3.select("#dat").append("table").attr("class","table");
-  
-    // Create Table Header
-    table.append("thead").append("tr")
-    .selectAll('th').data(data.columns).enter()
-    .append("th").text(function (column) { return column; });
-  
-    // Populate Table
-    table.append("tbody").selectAll("tr").data(data).enter().append("tr")
-    .selectAll("td").data(function (d){return Object.values(d.d);}).enter().append("td")
-    .text(function(d){return d}).exit();
-}
-
+var trainState = {s:true};
 
 export function startTraining(data){
-    if(!isTraining){
-        console.log("Training Begin");
-        isTrainingM(true);
-        trainModel(data);
+    trainModel(data,trainState);
+    createTrainBttn("stop",data);
+}
+
+export function stopTraining(data){
+    trainState.s = false;
+    createTrainBttn("train",data);
+}
+
+export function changeSort(selection,data){
+    var valueList = _.map(data,(x)=>x.d[selection]);
+    var dataLS = _.zip(_.range(data.length),valueList);
+
+    // TODO: more intelligent sorting. 
+    if(selection == "sex"){
+        dataLS.sort((a,b)=>a[1]<b[1]);
     }else{
-        console.log("Already Training");
-        
+        dataLS.sort((a,b)=>parseFloat(a[1])-parseFloat(b[1]));
     }
+    
+    var newDat = [];
+    _.map(_.range(data.length),(x)=>newDat.push(data[dataLS[x][0]].d));
+    _.map(_.range(data.length),(x)=>data[x].d = newDat[x]);
+    makeTable(data);
+    createTrainBttn("train",data);
 }

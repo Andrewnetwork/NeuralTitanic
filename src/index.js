@@ -5,20 +5,18 @@
 import * as d3 from 'd3';
 import 'bootstrap';
 import './scss/app.scss';
-import { makeTable,startTraining } from './events';
+import {createTrainBttn,makeTable,createSortByMenu} from './ui';
+import {startTraining} from './events';
 
 // Main Definition 
 function main(){
-  var titanicData = null;
-
-  // Setup Event Listeners 
-  d3.select("#tableViewBttn").on("click",()=>makeTable(titanicData));
-  d3.select("#startBttn").on("click",()=>startTraining(titanicData));
 
   d3.dsv(",", "data/titanicData.csv", function(d) { 
     return {d}
   }).then(function(data) { 
-    titanicData = data;
+    createTrainBttn("train",data);
+    createSortByMenu(data);
+    startTraining(data);
     makeTable(data); 
   });
 }
