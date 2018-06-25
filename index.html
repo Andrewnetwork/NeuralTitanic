@@ -102,6 +102,15 @@
                     Check out my <a href="https://www.kaggle.com/andrewrib/dai-june-2018-workshop-notebook-2">python notebook on Kaggle.</a>
                 </p>
                 <p>
+                    <b>7. What's with predicting something that has already happened?</b><br/>
+                    This is often a confusing topic for people new to machine learning. 
+                    The idea is that the survival of a passenger is a <i>function</i> of the other observed variables. "Given the
+                    observed variables, what features of a passenger lead to survival or death?" With our 
+                    neural network, we aim to learn this function. In real predictive analytics problems, we aim to learn a function
+                    $$f(\text{observed variables}) = \text{target variables}$$ that can generalize to new data not seen in the training
+                    set. This requires many considerations which are largely related to the <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">bias-variance tradeoff.</a>
+                </p>
+                <p>
                     <b>Any more questions?</b> <br/>
                     If you have any questions, submit an issue on 
                     <a href="https://github.com/Andrewnetwork/NeuralTitanic">this repo</a> and I'll get back to you. 
