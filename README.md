@@ -1,6 +1,8 @@
 # Neural Titanic
 This visualization uses [TensorFlow.js](https://js.tensorflow.org/) to train a neural network on the titanic dataset and visualize how the predictions of the neural network evolve after every training epoch. The colors of each row indicate the predicted survival probability for each passenger. Red indicates a prediction that a passenger died. Green indicates a prediction that a passenger survived. The intensity of the color indicates the magnitude of the prediction probability. As an example, a bright green passenger represents a strong predicted probability for survival. We also plot the loss of our objective function on the left of the table with [D3.js](https://d3js.org/). 
 
+View live: https://andrewnetwork.github.io/NeuralTitanic/dist/
+
 ## Setup 
 1. Install [Node.js](https://nodejs.org/en/). 
 2. Clone or download this repo. 
