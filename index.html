@@ -19,27 +19,13 @@
     
     <div class="container">
         <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#dataOverview">Data Overview</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#visDetail">Visualization Details</a></li>
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#visDetail">Visualization Details</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#dataOverview">Data Overview</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#faq">FAQ</a></li>
         </ul>
         
         <div class="tab-content">
-            <div id="dataOverview" class="tab-pane fade show active infoBox">
-                <p>
-                        The sinking of the RMS Titanic is one of the most infamous shipwrecks in history.  
-                        On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, 
-                        killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international 
-                        community and led to better safety regulations for ships. One of the reasons that the shipwreck 
-                        led to such loss of life was that there were not enough lifeboats for the passengers and crew. 
-                        Although there was some element of luck involved in surviving the sinking, some groups of people 
-                        were more likely to survive than others, such as women, children, and the upper-class. In this challenge, 
-                        we ask you to complete the analysis of what sorts of people were likely to survive. In particular,
-                        we ask you to apply the tools of machine learning to predict which passengers survived the tragedy. 
-                        ( <a href="https://www.kaggle.com/c/titanic">Description Source</a> ) 
-                </p>
-            </div>
-            <div id="visDetail" class="tab-pane fade infoBox">
+            <div id="visDetail" class="tab-pane fade show active infoBox">
                 <p>
                     This visualization uses <a href="https://js.tensorflow.org/">TensorFlow.js</a> to train a neural network on 
                     the titanic dataset and visualize how the predictions of the neural network evolve after every training epoch.
@@ -58,6 +44,20 @@
                         <li>How does the number of neurons change the evolution of the predictions?</li>
                         <li>How does the activation function change the evolution of the predictions?</li>
                     </ul>
+                </p>
+            </div>
+            <div id="dataOverview" class="tab-pane fade show infoBox">
+                <p>
+                        The sinking of the RMS Titanic is one of the most infamous shipwrecks in history.  
+                        On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, 
+                        killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international 
+                        community and led to better safety regulations for ships. One of the reasons that the shipwreck 
+                        led to such loss of life was that there were not enough lifeboats for the passengers and crew. 
+                        Although there was some element of luck involved in surviving the sinking, some groups of people 
+                        were more likely to survive than others, such as women, children, and the upper-class. In this challenge, 
+                        we ask you to complete the analysis of what sorts of people were likely to survive. In particular,
+                        we ask you to apply the tools of machine learning to predict which passengers survived the tragedy. 
+                        ( <a href="https://www.kaggle.com/c/titanic">Description Source</a> ) 
                 </p>
             </div>
             <div id="faq" class="tab-pane fade infoBox">
