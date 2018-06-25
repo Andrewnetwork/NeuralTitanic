@@ -20,12 +20,12 @@
     <div class="container">
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#dataOverview">Data Overview</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu1">Visualization Details</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu2">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#visDetail">Visualization Details</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#faq">FAQ</a></li>
         </ul>
         
         <div class="tab-content">
-            <div id="dataOverview" class="tab-pane fade show active">
+            <div id="dataOverview" class="tab-pane fade show active infoBox">
                 <p>
                         The sinking of the RMS Titanic is one of the most infamous shipwrecks in history.  
                         On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, 
@@ -39,11 +39,73 @@
                         ( <a href="https://www.kaggle.com/c/titanic">Description Source</a> ) 
                 </p>
             </div>
-            <div id="menu1" class="tab-pane fade">
-                TODO
+            <div id="visDetail" class="tab-pane fade infoBox">
+                <p>
+                    This visualization uses <a href="https://js.tensorflow.org/">TensorFlow.js</a> to train a neural network on 
+                    the titanic dataset and visualize how the predictions of the neural network evolve after every training epoch.
+                    The colors of each row indicate the predicted survival probability for each passenger. Red indicates a 
+                    prediction that a passenger died. Green indicates a prediction that a passenger survived. The intensity of 
+                    the color indicates the magnitude of the prediction probability. As an example, a bright green passenger 
+                    represents a strong predicted probability for survival. We also plot the loss of our objective function
+                    on the left of the table with <a href="https://d3js.org/">D3.js</a>. <br/><br/>
+                    
+                    <a href="https://github.com/Andrewnetwork/NeuralTitanic">The code for this visualization is hosted on github.</a>
+                </p>
+                <p>
+                    Questions to Ask Yourself:
+                    <ul>
+                        <li>How does the batch size change the evolution of the predictions?</li>
+                        <li>How does the number of neurons change the evolution of the predictions?</li>
+                        <li>How does the activation function change the evolution of the predictions?</li>
+                    </ul>
+                </p>
             </div>
-            <div id="menu2" class="tab-pane fade">
-                TODO
+            <div id="faq" class="tab-pane fade infoBox">
+                <p>
+                    <b>1. What features are used in training the model?</b> <br/>
+                    I use everything but the ticket and cabin. These omitted features can be used for better predictions,
+                    but I did not use them to reduce the feature engineering I had to do to get this up and running. You
+                    can see how I preprocessed the data 
+                    <a href="https://github.com/Andrewnetwork/NeuralTitanic/blob/master/src/preprocessing.js">here.</a> 
+                </p>
+                <p>
+                    <b>2. Where is the test/validation set?</b> <br/>
+                    I don't use one here. I train on the entire dataset. This visualization is about understanding how 
+                    predictions change when training a neural network, not about how the network generalizes. Although, 
+                    from my experiments, if you are observing an accuracy &lt;= 0.78 you are most likely not overfitting. Any 
+                    accuracy higher than that is most likely the result of overfitting. 
+                </p>
+                <p>
+                    <b>3. What neural architecture do you use?</b> <br/>
+                    I use a single hidden layer neural network with a sigmoid output layer. I also use the 
+                    <a href="https://keras.io/initializers/#lecun_normal">lecun normal kernel initializer</a> for more consistent results. You can see more information on the model
+                    and training code 
+                    <a href="https://github.com/Andrewnetwork/NeuralTitanic/blob/master/src/modeling.js">here.</a>
+                </p>
+                <p>
+                    <b>4. What optimizer do you use?</b> <br/>
+                    I use adam with the default <a href="https://keras.io/optimizers/#adam">Keras parameters.</a> 
+                </p>
+                <p>
+                    <b>5. Why do the predictions become horrible after I sort the data?</b> <br/>
+                    How the data is sorted and displayed is the same order it is batched for training. 
+                    If your batch size is less than the entirety of dataset, you will be using mini-batch gradients.
+                    Due to the small scale of this dataset and imbalance in classes, this network is prone to being lead
+                    to a point in gradient space from which it cannot escape if the batches are too small and the 
+                    consecutive gradients calculated are from the same class. For example, try sorting by male and 
+                    changing your batch size to 20. The network will train on batches of 20 males, who mostly died,
+                    until it gets to the females. By that point, the representation is so biased towards dead males
+                    that it takes a lot of gradient energy to get to a location that also captures female survival.  
+                </p>
+                <p>
+                    <b>6. Where can I find a more thorough analysis of using neural networks on this dataset?</b><br/>
+                    Check out my <a href="https://www.kaggle.com/andrewrib/dai-june-2018-workshop-notebook-2">python notebook on Kaggle.</a>
+                </p>
+                <p>
+                    <b>Any more questions?</b> <br/>
+                    If you have any questions, submit an issue on 
+                    <a href="https://github.com/Andrewnetwork/NeuralTitanic">this repo</a> and I'll get back to you. 
+                </p>
             </div>
         </div>
     </div>
@@ -69,12 +131,29 @@
                           <input type="number" class="form-control" id="batchSize" placeholder="Epochs" value="300">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="nNeurons" class="col-sm-5 col-form-label">#Neurons</label>
+                        <div class="col-sm-6">
+                          <input type="number" class="form-control" id="nNeurons" placeholder="Epochs" value="40">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="activationFunction" class="col-sm-5 col-form-label">Activation</label>
+                        <div class="col-sm-6">
+                            <select id="activationFunction" class="form-control">
+                                <option>sigmoid</option>
+                                <option>linear</option>
+                                <option>relu</option>
+                                <option>tanh</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
-            <div id="startBttnContainer">
-                <button id="startBttn" class="btn btn-success btn-lg">Start Training</button>
+            <div id="trainBttnContainer">
             </div>
         </div>
+        <div id="tableControls"></div>
         <div id="dataDisplay">
             <div id="dat"></div>
         </div>

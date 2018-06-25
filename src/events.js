@@ -4,7 +4,7 @@
 
 import * as d3 from "d3";
 import {trainModel} from './modeling';
-import {createTrainBttn,makeTable} from './ui';
+import {createTrainBttn,makeTable,blankTrainingPlot} from './ui';
 import * as tf from '@tensorflow/tfjs';
 
 // Event State
@@ -21,6 +21,7 @@ export function stopTraining(data){
 }
 
 export function changeSort(selection,data){
+    blankTrainingPlot()
     var valueList = _.map(data,(x)=>x.d[selection]);
     var dataLS = _.zip(_.range(data.length),valueList);
 

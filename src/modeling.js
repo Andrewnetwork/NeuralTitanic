@@ -62,7 +62,7 @@ export async function trainModel(data,trainState){
             }
         }catch(err){
             // End of epoch. 
-            console.log("Epoch "+epoch+"/"+epochs+" ended.");
+            //console.log("Epoch "+epoch+"/"+epochs+" ended.");
             const xs = tf.tensor(X);
             const pred = model.predict(xs).dataSync();
             updatePredictions(pred);

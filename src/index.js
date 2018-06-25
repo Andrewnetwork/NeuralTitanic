@@ -5,7 +5,7 @@
 import * as d3 from 'd3';
 import 'bootstrap';
 import './scss/app.scss';
-import {createTrainBttn,makeTable,createSortByMenu} from './ui';
+import {createTrainBttn,makeTable,createSortByMenu,attachChangeParameterHandler} from './ui';
 import {startTraining} from './events';
 
 // Main Definition 
@@ -18,6 +18,7 @@ function main(){
     createSortByMenu(data);
     startTraining(data);
     makeTable(data); 
+    attachChangeParameterHandler();
   });
 }
 

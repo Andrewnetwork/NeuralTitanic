@@ -6,6 +6,11 @@ import * as d3 from "d3";
 import * as _ from "lodash";
 import { startTraining,stopTraining, changeSort} from './events';
 
+var svg = d3.select("#trainingCurves").select("svg");
+const margin = {top: 20, right: 20, bottom: 20, left: 20};
+const width  = +svg.attr("width") - margin.left - margin.right;
+const height = +svg.attr("height") - margin.top - margin.bottom;
+
 export function createTrainBttn(state,titanicData){
     d3.select("#trainBttnContainer").selectAll("*").remove();
   
@@ -22,6 +27,9 @@ export function createTrainBttn(state,titanicData){
     }
 }
 
+export function attachChangeParameterHandler(){
+    d3.select("#modelParameters").selectAll(".form-control").on("change",()=>blankTrainingPlot());
+}
 export function updatePredictions(predictions){
     function predToColor(pred){
         var color = "0,0,0";
@@ -44,11 +52,6 @@ export function updatePredictions(predictions){
     .selectAll("tr").data(predColor).style("background-color",(x)=>x);
 }
 
-var svg = d3.select("#trainingCurves").select("svg");
-const margin = {top: 20, right: 20, bottom: 20, left: 20};
-const width  = +svg.attr("width") - margin.left - margin.right;
-const height = +svg.attr("height") - margin.top - margin.bottom;
-
 export function initPlot(){
     d3.select("#trainingCurves").select("svg").selectAll("*").remove();
 
@@ -61,6 +64,7 @@ export function initPlot(){
     .attr("y",height ).attr("fill","#377ff2")
     .style("font-size","20px");
 }
+
 export async function plotLoss(lossData,accuracy){
     // Modified from: https://bl.ocks.org/mbostock/3883245
     var g = svg.select("g");
@@ -115,4 +119,12 @@ export function createSortByMenu(data){
     .attr("class","form-control").on("change",(_a,_b,sel)=>changeSort(sel[0].value,data))
     .selectAll("option").data(["pclass","survived","sex","age","sibsp","parch","fare"]).enter().append("option")
     .text(function (d){return d});
+}
+
+export function blankTrainingPlot(){
+    d3.select("#trainingCurves").select("svg").selectAll("*").remove();
+
+    d3.select("#trainingCurves").select("svg").append("text")
+    .style("font","bold 30px sans-serif").attr("x","48").attr("y","160")
+    .attr("fill","rgba(57, 57, 121, 0.692)").text("Start Training");
 }
